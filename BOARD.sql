@@ -1,34 +1,35 @@
-CREATE TABLE "USERS" 
-   (	"ID" NUMBER GENERATED AS IDENTITY constraint pk_users_id primary key,
-	"USER_ID" varchar2(50) not null unique, 
-	"PASSWORD" VARCHAR2(64) NOT NULL,
-	"NAME" VARCHAR2(15) NOT NULL,
-    "PHONE" VARCHAR2(14) NOT NULL,
-    "ADDRESS" VARCHAR2(100),
-    "EMAIL" VARCHAR2(100) NOT NULL UNIQUE,
-    "GIT_ADDRESS    " VARCHAR2(100),
-    "GENDER" NUMBER(1),
-    "BIRTH" DATE,
-    "CREATED_AT" TIMESTAMP
+CREATE TABLE users
+   (	"id" NUMBER GENERATED AS IDENTITY primary key,
+	"user_id" varchar2(50) not null unique, 
+	"password" VARCHAR2(64) NOT NULL,
+	"name" VARCHAR2(15) NOT NULL,
+    "phone" VARCHAR2(14) NOT NULL,
+    "address" VARCHAR2(100),
+    "email" VARCHAR2(100) NOT NULL UNIQUE,
+    "git_address" VARCHAR2(100),
+    "gender" NUMBER(1),
+    "birth" DATE,
+    "created_at" timestamp default current_timestamp
     );
   
-CREATE TABLE "BOARDS" 
-   (	"ID" NUMBER GENERATED AS IDENTITY constraint pk_boardsd_id primary key,
-	"USER_ID" NUMBER, 
-	"TITLE" VARCHAR2(100 BYTE) NOT NULL ENABLE,     
-	"CONTENT" LONG NOT NULL ENABLE,
-    "VIEW" number default 0,
-    "CREATED_AT" timestamp,
-    "IS_WITHDREW" number(1),
-    constraint fk_boards_id foreign key (id) references users (id)
+CREATE TABLE boards
+   (	"id" NUMBER GENERATED AS IDENTITY primary key,
+	
+	"title" VARCHAR2(100 BYTE) NOT NULL ENABLE,     
+	"content" LONG NOT NULL,
+    "views" number default 0,
+    "created_at" timestamp default current_timestamp,
+    "is_withdrew" number(1),
+    "user_id" NUMBER,
+    constraint fk_user foreign key ("user_id") references users ("id")
     );
     
-CREATE TABLE "LIKES_AND_HATES" 
-   (	"ID" NUMBER GENERATED AS IDENTITY constraint pk_lah_id primary key,
-	"USER_ID" NUMBER, 
-	"BOARD_ID" number,
-	"LIKES_OR_HATES" NUMBER(1),    
-    "CREATED_AT" timestamp,
-    constraint fk_lah_user_id foreign key (USER_ID) references USERS (ID),
-    constraint fk_lah_board_id foreign key (BOARD_ID) references BOARDS (ID)
+CREATE TABLE likes_and_hates 
+   (	"id" NUMBER GENERATED AS IDENTITY primary key,
+	"user_id" NUMBER,
+	"board_id" number,
+	"likes_or_hates" NUMBER(1),    
+    "created_at" timestamp default current_timestamp,
+    constraint fk_user_lah foreign key ("user_id") references users ("id"),
+    constraint fk_board_lah foreign key ("board_id") references boards ("id")
     );
