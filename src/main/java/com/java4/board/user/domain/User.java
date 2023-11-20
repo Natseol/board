@@ -22,16 +22,11 @@ public class User {
 	private String name;
 	@NonNull
 	private String phone;
-	@NonNull
-	private String address;
+	private String address="";
 	@NonNull
 	private String email;
-	@NonNull
-	private String gitAddress;
-	@NonNull
-	private String gender;
-	@NonNull
+	private String gitAddress="";
+	private boolean gender;
+	private Date birth=null;	
 	private Date createdAt;
-	@NonNull
-	private Date birth;	
 }

@@ -3,3 +3,8 @@
 #header h1{
     text-align: center;
 }
+
+.button-box {
+    text-align: right;
+    margin: 20px;
+}

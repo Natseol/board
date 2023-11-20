@@ -1,0 +1,27 @@
+<html mxlns:th="http://www.thymeleaaf.org">
+
+<head th:fragment="loginFragmentHead">
+    <link rel="stylesheet" href="/styles/board/index.css" />
+</head>
+
+<body>
+    <div th:fragment="loginFragment" class="login container">
+        <form action="/login" method="POST">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInputId" placeholder="아이디" name="user-id">
+                <label for="floatingInputId">아이디</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="floatingInputPw" placeholder="비밀번호" name="password">
+                <label for="floatingInputPw">비밀번호</label>
+            </div>
+            <button type="submit" class="btn btn-primary">접속</button>
+            <button type="button" class="btn btn-secondary" onclick="window.history.back()">뒤로 가기</button>
+        </form>
+        <script>
+
+        </script>
+    </div>
+</body>
+
+</html>

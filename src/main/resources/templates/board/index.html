@@ -5,25 +5,42 @@
 </head>
 
 <body>
-    <div th:fragment="boardFragment" class="board">
-        <form action="/" method="POST">
-            <div>이름</div><input type="text" name="title">
-            <div>내용</div><input type="text" name="content">
-            <div>작성자</div><input type="text" name="user-id" placeholder="5">
-            <button type="submit">글 작성</button>
+    <div th:fragment="boardFragment" class="board container">
+        <form action="/add" method="POST">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" placeholder="title" name="title">
+                <label for="floatingInput">title</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <textarea class="form-control" placeholder="content" id="floatingTextarea" name="content"></textarea>
+                <label for="floatingTextarea">content</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">글 작성</button>
         </form>
         <hr>
-        <ul id="list" th:each="item:${list}" th:object="${item}" >
-            <li class="items-inner-box">
-                <div class="title">제목: [[*{title}]] </div>
-                <div class="content">내용: [[*{content}]] </div>
-                <div class="user-id">유저아이디: [[*{userId}]] </div>
-            </li>
-        </ul>
-
-        <script>
-            console.log("[[${list}]]");
-        </script>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">제목</th>
+                        <th scope="col">작성자</th>
+                        <th scope="col">작성일</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item, itemStat:${list}" th:object="${item}">
+                        <th scope="row" th:text="*{id}"></th>
+                        <td th:text="*{title}"></td>
+                        <td th:text="${boardUserList.get(itemStat.index)}"></td>
+                        <td th:text="*{createdAt}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
+
 </html>

@@ -9,16 +9,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.java4.board.board.domain.Board;
 import com.java4.board.board.service.BoardService;
+import com.java4.board.user.service.UserService;
 
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class BoardController {
 	@Autowired
 	BoardService boardService;
+	@Autowired
+	UserService userService;
 	
 	@GetMapping("/")
 	public String boardMainPage(Model model) {
@@ -28,13 +31,20 @@ public class BoardController {
 		model.addAttribute("contentHead", "boardFragmentHead");
 		
 		List<Board> list = boardService.getAll();
-		model.addAttribute("list",list);
+		model.addAttribute("list",list);		
+		
+		List<String> boardUserList = boardService.getBoardUserIDs();
+		model.addAttribute("boardUserList",boardUserList);
+		
 		return "/basic/layout";
 	}
 	
-	@PostMapping("/")
-	public String add(@RequestParam Map<String, String> data) {
-		boardService.add(new Board(data.get("title"),data.get("content"),Integer.parseInt(data.get("user-id"))));
+	@PostMapping("/add")
+	public String addItem(@RequestParam Map<String, String> data, HttpSession session) {
+		System.out.println(session.getAttribute("userId"));
+		int userIntId = userService.get((String) session.getAttribute("userId")).getId();
+		System.out.println("userIntId: "+ userIntId);
+		boardService.add(new Board(data.get("title"),data.get("content"),userIntId));
 		return "redirect:/";
 	}
 	
@@ -45,5 +55,5 @@ public class BoardController {
 		model.addAttribute("content", "noticeFragment"); 
 		model.addAttribute("contentHead", "noticeFragmentHead");
 		return "/basic/layout";
-	}
+	}	
 }

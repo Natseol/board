@@ -1,3 +1,7 @@
+alter session set "_ORACLE_SCRIPT"=true;
+create user board identified by qwer;
+grant connect, resource, dba to board 
+
 CREATE TABLE users
    (	"id" NUMBER GENERATED AS IDENTITY primary key,
 	"user_id" varchar2(50) not null unique, 

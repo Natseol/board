@@ -21,7 +21,7 @@ public class Board {
 	private int views = 0;
 	private int likes = 0;
 	private int hates = 0;
-	private Timestamp createAt;
+	private Timestamp createdAt;
 	private boolean isWithdrew = false;
 	@NonNull
 	private int userId;

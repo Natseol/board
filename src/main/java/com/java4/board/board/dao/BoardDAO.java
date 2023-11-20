@@ -15,7 +15,7 @@ import com.java4.board.board.domain.Board;
 public class BoardDAO {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	
+
 	private RowMapper<Board> mapper = new RowMapper<Board>() {
 		@Override
 		public Board mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -32,8 +32,8 @@ public class BoardDAO {
 	};
 
 	public void add(Board board) {
-		jdbcTemplate.update("insert into boards (\"title\", \"content\", \"user_id\") values (?, ?, ?)", board.getTitle(),
-				board.getContent(), board.getUserId());
+		jdbcTemplate.update("insert into boards (\"title\", \"content\", \"is_withdrew\", \"user_id\") values (?, ?, ?, ?)", board.getTitle(),
+				board.getContent(), 0, board.getUserId());
 	}
 
 //	public Board get(int id) {

@@ -5,6 +5,24 @@
 <body>
     <div th:fragment="headerFragment" id="header">
         <h1 th:text="${title}"></h1>
+        <div class="button-box">
+            <button type="button" onclick="location.href='/login'" class="btn btn-warning" id="loginButton">로그인</button>
+            <button type="button" onclick="location.href='/regist'" class="btn btn-success">회원가입</button>
+        </div>
+        <script>
+            let userId = "[[${session.userId}]]"
+            const loginButton = document.getElementById("loginButton")
+            console.log( userId);
+            if (userId!="")  {
+                console.log("[[${session.userId}]]")
+                loginButton.innerText="로그아웃";
+                loginButton.onclick=function() {
+                    location.href='/logout';
+                };
+                loginButton.classList.remove("btn-warning");
+                loginButton.classList.add("btn-danger");
+            }
+        </script>
     </div>
 </body>
 </html>
