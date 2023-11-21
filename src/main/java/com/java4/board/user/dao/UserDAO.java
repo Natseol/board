@@ -26,9 +26,9 @@ public class UserDAO {
 					rs.getString("address"),
 					rs.getString("email"),
 					rs.getString("git_address"),
-					rs.getInt("gender")==1,
+					rs.getInt("gender"),
 					rs.getDate("birth"),
-					rs.getDate("created_at"));
+					rs.getTimestamp("created_at"));
 		}
 	};
 	
@@ -42,7 +42,7 @@ public class UserDAO {
 				user.getAddress(),
 				user.getEmail(),
 				user.getGitAddress(),
-				user.isGender(),
+				user.getGender(),
 				user.getBirth());
 	}	
 
@@ -53,4 +53,5 @@ public class UserDAO {
 	public User get(int id) {
 		return jdbcTemplate.queryForObject("select * from users where \"id\"=?", mapper, id);
 	}
+
 }

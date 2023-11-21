@@ -1,6 +1,7 @@
 package com.java4.board.user.domain;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +27,7 @@ public class User {
 	@NonNull
 	private String email;
 	private String gitAddress="";
-	private boolean gender;
+	private int gender=0;
 	private Date birth=null;	
-	private Date createdAt;
+	private Timestamp createdAt;
 }

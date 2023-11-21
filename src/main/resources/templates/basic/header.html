@@ -1,28 +1,20 @@
 <html lang="ko" mxlns:th="http://www.thymeleaaf.org">
+
 <head th:fragment="headerFragmentHead">
     <link rel="stylesheet" href="/styles/board/index.css" />
 </head>
+
 <body>
-    <div th:fragment="headerFragment" id="header">
-        <h1 th:text="${title}"></h1>
-        <div class="button-box">
-            <button type="button" onclick="location.href='/login'" class="btn btn-warning" id="loginButton">로그인</button>
-            <button type="button" onclick="location.href='/regist'" class="btn btn-success">회원가입</button>
+    <div th:fragment="headerFragment" id="header" class="container">
+        <div class="d-flex justify-content-between mt-4">
+            <div>
+                <button type="button" onclick="location.href='/'" class="btn btn-secondary" id="HOMEButton">Home</button>
+                <button type="button" onclick="location.href='/user/regist'" class="btn btn-success">회원가입</button>    
+            </div>
+            <div class="button-box"th:replace="~{/user/loginBox :: loginFragment}"></div>            
         </div>
-        <script>
-            let userId = "[[${session.userId}]]"
-            const loginButton = document.getElementById("loginButton")
-            console.log( userId);
-            if (userId!="")  {
-                console.log("[[${session.userId}]]")
-                loginButton.innerText="로그아웃";
-                loginButton.onclick=function() {
-                    location.href='/logout';
-                };
-                loginButton.classList.remove("btn-warning");
-                loginButton.classList.add("btn-danger");
-            }
-        </script>
+        <h1 th:text="${title}"></h1>       
     </div>
 </body>
+
 </html>
