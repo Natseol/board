@@ -8,3 +8,7 @@
     text-align: right;
     margin: 20px;
 }
+
+#writeForm {
+    display: none;
+}

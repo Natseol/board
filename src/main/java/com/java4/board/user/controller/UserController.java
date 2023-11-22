@@ -1,7 +1,6 @@
 package com.java4.board.user.controller;
 
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.java4.board.user.domain.User;
 import com.java4.board.user.service.UserService;
@@ -34,6 +34,7 @@ public class UserController {
 	
 	@PostMapping("regist")
 	public String registUser(@RequestParam Map<String, String> data, Model model) {
+		System.out.println("regist post");
 		try {
 			User user = new User(data.get("user-id"),
 					data.get("password"),
@@ -45,10 +46,11 @@ public class UserController {
 			if (data.get("gender")!=null) user.setGender(Integer.parseInt(data.get("gender")));
 			if (data.get("birth")!="") user.setBirth(Date.valueOf(data.get("birth")));
 			userService.add(user);
+			System.out.println("가입성공");
 			return "redirect:/";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace();			
 			model.addAttribute("requestError","회원가입 실패");
 			return "redirect:/user/regist";
 		}
@@ -60,12 +62,12 @@ public class UserController {
 		model.addAttribute("path", "/user/login"); 
 		model.addAttribute("content", "loginFragment"); 
 		model.addAttribute("contentHead", "loginFragmentHead");
-		session.removeAttribute("requestError");
 		return "/basic/layout";
 	}
 	
 	@PostMapping("login")
-	public String loginUser(@RequestParam Map<String, String> data, HttpSession session, Model model) {
+	public String loginUser(@RequestParam Map<String, String> data, HttpSession session,
+			Model model, RedirectAttributes redirectAttribute) {
 		try {
 			User tempUser = new User();
 			tempUser.setUserId(data.get("user-id"));
@@ -74,12 +76,11 @@ public class UserController {
 			if (tempUser != null) {
 				session.setAttribute("userId", tempUser.getUserId());
 				session.setAttribute("userName", tempUser.getName());
-				session.removeAttribute("requestError");
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			session.setAttribute("requestError","회원가입 실패");
+			redirectAttribute.addFlashAttribute("requestError","회원가입 실패");
 			return "redirect:/";
 		}
 		return "redirect:/";

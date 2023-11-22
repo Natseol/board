@@ -6,7 +6,7 @@
 
 <body>
     <div th:fragment="boardFragment" class="board container">
-        <form action="/add" method="POST">
+        <form action="/add" method="POST" id="writeForm">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="floatingInput" placeholder="title" name="title">
                 <label for="floatingInput">title</label>
@@ -17,7 +17,7 @@
                 <label for="floatingTextarea">content</label>
             </div>
 
-            <button type="submit" class="btn btn-primary">글 작성</button>
+            <button type="submit" class="btn btn-primary" id="writeButton">글 작성</button>
         </form>
         <hr>
         <div>
@@ -40,6 +40,29 @@
                 </tbody>
             </table>
         </div>
+        <script>
+            function writeFromDisplay() {
+                if ("[[${session.userId}]]" != "") {
+                    document.getElementById("writeForm").style = "display:block;"
+                }
+            }
+            writeFromDisplay();
+
+            document.getElementById("writeButton").onclick = (e) => {
+                const inputTitle = document.getElementById("floatingInput");
+                const inputContent = document.getElementById("floatingTextarea");
+                const writeModal = new bootstrap.Modal(document.getElementById('myModal'))
+                if ("[[${session.userId}]]" == "") {
+                    document.getElementById("modalBody").innerHTML = "로그인 후 글작성이 가능합니다"
+                    writeModal.show();
+                    e.preventDefault();
+                } else if (inputTitle.value == "" || inputContent.value == "") {
+                    document.getElementById("modalBody").innerHTML = "제목과 내용을 모두 작성해야 합니다"
+                    writeModal.show();
+                    e.preventDefault();
+                }
+            }
+        </script>
     </div>
 </body>
 

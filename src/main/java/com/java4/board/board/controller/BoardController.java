@@ -40,11 +40,15 @@ public class BoardController {
 	}
 	
 	@PostMapping("/add")
-	public String addItem(@RequestParam Map<String, String> data, HttpSession session) {
-		System.out.println(session.getAttribute("userId"));
-		int userIntId = userService.get((String) session.getAttribute("userId")).getId();
-		System.out.println("userIntId: "+ userIntId);
-		boardService.add(new Board(data.get("title"),data.get("content"),userIntId));
+	public String addItem(@RequestParam Map<String, String> data, HttpSession session, Model model) {
+		try {
+			int userIntId = userService.get((String) session.getAttribute("userId")).getId();
+			boardService.add(new Board(data.get("title"),data.get("content"),userIntId));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			model.addAttribute("requestError","글 작성 실패");
+		}
 		return "redirect:/";
 	}
 	

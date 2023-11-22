@@ -1,0 +1,24 @@
+<html lang="ko" mxlns:th="http://www.thymeleaaf.org">
+
+<head th:fragment="modalFragmentHead">
+    
+</head>
+<body>
+    <div th:fragment="modalFragment" id="modal-container">
+        <div class="modal fade" id="myModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel" style="color:red">입력하신 내용을 확인해주세요</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modalBody" style="font-weight: bold;"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

@@ -22,25 +22,6 @@
                 </div>
             </form>
         </div>
-
-        <!-- Modal -->
-        <div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="loginModalLabel" style="color:red">입력하신 내용을 확인해주세요</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body" id="loginModalBody" style="font-weight: bold;">회원 정보를 확인해 주세요</div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
         <script>
             let userId = "[[${session.userId}]]"
             const loginButton = document.getElementById("loginButton")
@@ -53,11 +34,12 @@
                 };
                 loginButton.classList.remove("btn-warning");
                 loginButton.classList.add("btn-danger");
-                document.getElementById("loginInput").outerHTML = "";
+                document.getElementById("loginInput").outerHTML = "";                
             } else {
-                const loginModal = new bootstrap.Modal(document.getElementById('loginModal'))
-                if ("[[${session.requestError}]]" == "회원가입 실패") {
-                    loginModal.show();
+                const modal = new bootstrap.Modal(document.getElementById('myModal'))
+                if ("[[${requestErrorFlash}]]" == "회원가입 실패") {
+                    document.getElementById("modalBody").innerHTML="아이디 또는 비밀번호가 맞지 않습니다"                    ;
+                    modal.show();
                 }
             }
         </script>

@@ -31,7 +31,7 @@
 
 <body>
     <div th:fragment="registFragment" class="regist container">
-        <form action="/user/regist" method="POST">
+        <form action="/user/regist" method="POST" id="regist-form">
             <div class="input-group mb-3">
                 <span class="input-group-text">ID<span style="color:red">&nbsp*</span></span>
                 <div class="form-floating">
@@ -110,142 +110,7 @@
             <button type="button" class="btn btn-secondary" id="check">확인</button>
         </form>
 
-        <!-- Modal -->
-        <div class="modal fade" id="registModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="registModalLabel" style="color:red">입력하신 내용을 확인해주세요</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body" id="modalBody" style="font-weight: bold;"></div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <script>
-            $("#datepicker").datepicker({
-                format: "yyyy-mm-dd",
-                <!-- startDate:"-1d", -->
-                endDate: "1d",
-                autoclose: true,
-                title: "Birth-day",
-                language: "ko"
-            });
-            const registModal = new bootstrap.Modal(document.getElementById('registModal'))
-
-            function validateId() {
-                let inputValue = document.getElementById('floatingInputGroupId').value;
-                let pattern = /^[0-9a-zA-Z].{2,9}$/;
-                if (inputValue != "" && !pattern.test(inputValue)) {
-                    document.getElementById("modalBody").innerHTML = "영어 또는 숫자,<br>3글자 ~ 10글자만 입력 가능합니다"
-                    registModal.show()
-                }
-            }
-
-            function validatePw() {
-                let inputValue = document.getElementById('floatingInputGroupPw').value;
-                let pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,30}$/;
-                if (inputValue != "" && !pattern.test(inputValue)) {
-                    document.getElementById("modalBody").innerHTML = "대문자, 소문자, 숫자, 특수문자를 모두 포함해야 합니다<br>10자 이상 30글자 이하만 가능합니다"
-                    registModal.show()
-                }
-            }
-
-            function validateName() {
-                let inputValue = document.getElementById('floatingInputGroupName').value;
-                let pattern = /^[가-힣]{2,10}$|^[a-zA-Z]{4,10}$/;
-                if (inputValue != "" && !pattern.test(inputValue)) {
-                    document.getElementById("modalBody").innerHTML = "한글 최소 2 ~ 최대 10자<br>영어 최소 4 ~ 최대 20자만 가능합니다"
-                    registModal.show()
-                }
-            }
-
-            function validatePhone() {
-                let inputValue = document.getElementById('floatingInputGroupPhone').value;
-                let pattern1 = /^[0-9]{10,11}$/;
-                let pattern2 = /^(\d{3}-?\d{3,4}-?\d{4})$/;
-                console.log(inputValue)
-                if (inputValue.includes("-")) {
-                    if (inputValue != "" && !pattern2.test(inputValue)) {
-                        document.getElementById("modalBody").innerHTML = "총 12~13자만 입력가능합니다"
-                        registModal.show()
-                    }
-                } else {
-                    if (inputValue != "" && !pattern1.test(inputValue)) {
-                        document.getElementById("modalBody").innerHTML = "숫자 10~11자만 입력가능합니다"
-                        registModal.show()
-                    }
-                }
-            }
-
-            function validateAddress() {
-                let inputValue = document.getElementById('floatingInputGroupAdd').value;
-                let pattern = /^.{5,100}$/;
-                if (inputValue != "" && !pattern.test(inputValue)) {
-                    document.getElementById("modalBody").innerHTML = "최소 5 ~ 최대 100자만 가능합니다"
-                    registModal.show()
-                }
-            }
-
-            function validateEmail() {
-                let inputValue = document.getElementById('floatingInputGroupEmail').value;
-                let pattern = /^[^\s@]+@.*\.(com|org|co\.kr|net)$/;
-                if (inputValue != "" && !pattern.test(inputValue)) {
-                    document.getElementById("modalBody").innerHTML = "@가 포함되어야 합니다<br>.com .org .co.kr .net 으로 끝나야만 합니다"
-                    registModal.show()
-                }
-            }
-
-            document.getElementById('submitButton').addEventListener("click", () => {
-                // 깃허브 주소 추가
-                let gitValue = document.getElementById('floatingInputGroupGit').value;
-                console.log(gitValue)
-                if (gitValue != "" && gitValue.indexOf("/") === -1) {
-                    gitValue = "https://github.com/" + gitValue;
-                    document.getElementById('floatingInputGroupGit').value = gitValue;
-                }
-                                
-                //폰번호 하이픈 추가
-                let phoneValue = document.getElementById('floatingInputGroupPhone').value;
-                if (phoneValue.length === 10) {
-                    phoneValue = `${phoneValue.slice(0, 3)}-${phoneValue.slice(3, 6)}-${phoneValue.slice(6)}`;
-                    document.getElementById('floatingInputGroupPhone').value = phoneValue
-                    console.log(document.getElementById('floatingInputGroupPhone').value)
-                } else if (phoneValue.length === 11) {
-                    phoneValue = `${phoneValue.slice(0, 3)}-${phoneValue.slice(3, 7)}-${phoneValue.slice(7)}`;
-                    document.getElementById('floatingInputGroupPhone').value = phoneValue
-                    console.log(document.getElementById('floatingInputGroupPhone').value)
-                }
-            })
-
-            document.getElementById('check').addEventListener("click", () => {
-                // 깃허브 주소 추가
-                let gitValue = document.getElementById('floatingInputGroupGit').value;
-                console.log(gitValue)
-                if (gitValue != "" && gitValue.indexOf("/") === -1) {
-                    gitValue = "https://github.com/" + gitValue;
-                    document.getElementById('floatingInputGroupGit').value = gitValue;
-                    console.log(gitValue)
-                }
-                                
-                //폰번호 하이픈 추가
-                let phoneValue = document.getElementById('floatingInputGroupPhone').value;
-                if (phoneValue.length === 10) {
-                    phoneValue = `${phoneValue.slice(0, 3)}-${phoneValue.slice(3, 6)}-${phoneValue.slice(6)}`;
-                    document.getElementById('floatingInputGroupPhone').value = phoneValue
-                    console.log(document.getElementById('floatingInputGroupPhone').value)
-                } else if (phoneValue.length === 11) {
-                    phoneValue = `${phoneValue.slice(0, 3)}-${phoneValue.slice(3, 7)}-${phoneValue.slice(7)}`;
-                    document.getElementById('floatingInputGroupPhone').value = phoneValue
-                    console.log(document.getElementById('floatingInputGroupPhone').value)
-                }
-            })
-        </script>
+        <script src="/scripts/user/regist.js"></script>
     </div>
 </body>
 
