@@ -4,7 +4,7 @@
     <div th:fragment="loginFragment">
 
         <div class="d-flex">
-            <form action="/user/login" method="POST">
+            <form action="/user/login" method="POST" id="login-form">
                 <div class="input-group input-group-sm">
                     <div class="d-flex" id="loginInput">
                         <input type="text" class="form-control" id="floatingInputId" placeholder="아이디" name="user-id">
@@ -22,6 +22,8 @@
                 </div>
             </form>
         </div>
+        <script src="/scripts/user/index.js"></script>
+        <script src="/scripts/user/login.js"></script>
         <script>
             let userId = "[[${session.userId}]]"
             const loginButton = document.getElementById("loginButton")
@@ -34,15 +36,15 @@
                 };
                 loginButton.classList.remove("btn-warning");
                 loginButton.classList.add("btn-danger");
-                document.getElementById("loginInput").outerHTML = "";                
+                document.getElementById("loginInput").outerHTML = "";
             } else {
-                const modal = new bootstrap.Modal(document.getElementById('myModal'))
-                if ("[[${requestErrorFlash}]]" == "회원가입 실패") {
-                    document.getElementById("modalBody").innerHTML="아이디 또는 비밀번호가 맞지 않습니다"                    ;
-                    modal.show();
-                }
+                // const modal = new bootstrap.Modal(document.getElementById('myModal'))
+                // if ("[[${requestErrorFlash}]]" == "로그인 실패") {
+                //     document.getElementById("modalBody").innerHTML="아이디 또는 비밀번호가 맞지 않습니다"                    ;
+                //     modal.show();
+                // }
             }
-        </script>
+        </script>        
     </div>
 </body>
 

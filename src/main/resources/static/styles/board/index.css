@@ -12,3 +12,13 @@
 #writeForm {
     display: none;
 }
+
+.index-title {
+    text-decoration: none;
+    color: black;
+}
+
+.index-userId {
+    text-decoration: none;
+    color: black;
+}

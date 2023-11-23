@@ -2,6 +2,7 @@ package com.java4.board.board.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,19 +23,40 @@ public class BoardService {
 		boardDAO.add(board);
 		
 	}
+	
+	public Board get(int id) {
+		return boardDAO.get(id);		
+	}
+	
+	public void del(int withdrew, int id) {
+		boardDAO.del(withdrew, id);
+	}
+	
+	public void edit(String title, String content, int id) {
+		boardDAO.edit(title, content, id);
+	}
 
 	public List<String> getBoardUserIDs() {
-		List<Board> list = boardDAO.getAll();
-		List<String> idList = new ArrayList<>();
-		for (int i = 0; i < list.size(); i++) {	
-			idList.add(i, userDAO.get(list.get(i).getUserId()).getUserId());
-		}		
+		List<String> idList = boardDAO.getAll().stream()
+				.map(board -> userDAO.get(board.getUserId()).getUserId())
+				.collect(Collectors.toList());		
 		return idList;
 	}
 	
+	public List<Board> getPage(int page, int num) {
+		List<Board> list = boardDAO.getPage(page, num);		
+		return getExceptWithdrew(list);
+	}
 	
 	public List<Board> getAll() {
-		List<Board> list = boardDAO.getAll();		
+		List<Board> list = boardDAO.getAll();	
+		return getExceptWithdrew(list);
+	}
+	
+	private List<Board> getExceptWithdrew(List<Board> tempList) {
+		List<Board> list = tempList.stream()
+				.filter(board -> board.isWithdrew()==false)
+				.collect(Collectors.toList());
 		return list;
 	}
 }

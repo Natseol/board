@@ -9,8 +9,6 @@ $("#datepicker").datepicker({
 
 document.getElementById("regist-form").onsubmit = function(e) {
     
-    const idReg = /^[0-9a-z9A-Z]{3,20}$/;
-    const pwReg = /^(?=.*[a-zA-Z])(?=.*[!@#$%^&])(?=.*[0-9]).{10,30}$/;
     const koreanReg = /[ㄱ-ㅎㅏ-ㅣ가-힣]/g;
     const phoneReg = /^[0-9]{3}-[0-9]{3,4}-[0-9]{4}$/;
     const emailReg = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+(.com|.net|.co.kr|.org)$/i;
@@ -18,20 +16,10 @@ document.getElementById("regist-form").onsubmit = function(e) {
     const tempName = e.target.floatingInputGroupName.value.replace(koreanReg,"aa");
     const tempPhone = e.target.floatingInputGroupPhone.value.replace(/^(\d{3})(\d{3,4})(\d{4})/,`$1-$2-$3`);
 
-    let msg = "";
-    if(!idReg.test(e.target.floatingInputGroupId.value)) {
-        if(e.target.floatingInputGroupId.value.length < 3 || e.target.floatingInputGroupId.value.length > 20) {
-            msg = "아이디의 길이는 3~20으로 해주세요";
-        } else {
-            msg = "아이디의 영와 숫자만 포함할 수 있습니다";
-        }
-    } else if (!pwReg.test(e.target.floatingInputGroupPw.value)) {
-        if(e.target.floatingInputGroupPw.value.length < 10 || e.target.floatingInputGroupPw.value.length >30) {
-            msg = "비밀번호의 길이는 10~30으로 해주세요";
-        } else {
-            msg = "비밀번호는 대소문자, 숫자, 특수문자를 포함해야 합니다";
-        }
-    } else if (tempName.length < 4 || tempName.length > 20 ) {
+    let msg  = checkId(e.target);
+    if (!msg) msg = checkPw(e.target);
+    
+    if (tempName.length < 4 || tempName.length > 20 ) {
         console.log(tempName.length)
         msg = "이름의 길이는 한글 2~10 영어 4~20자 기준으로 맞춰주세요"
     } else if (!phoneReg.test(tempPhone)) {

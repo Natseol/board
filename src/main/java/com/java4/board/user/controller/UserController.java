@@ -80,7 +80,7 @@ public class UserController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			redirectAttribute.addFlashAttribute("requestError","회원가입 실패");
+			redirectAttribute.addFlashAttribute("requestError","로그인 실패");
 			return "redirect:/";
 		}
 		return "redirect:/";
@@ -88,7 +88,7 @@ public class UserController {
 	
 	@GetMapping("logout")
 	public String loginOut(Model model, HttpSession session) {
-		session.setAttribute("userId", "");
+		session.removeAttribute("userId");
 		session.removeAttribute("userName");
 		return "redirect:/";
 	}

@@ -25,4 +25,6 @@ public class Board {
 	private boolean isWithdrew = false;
 	@NonNull
 	private int userId;
+	private String userStrId;
+	private String userGit;
 }

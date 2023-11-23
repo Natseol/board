@@ -1,0 +1,52 @@
+<html mxlns:th="http://www.thymeleaaf.org">
+
+<head th:fragment="editFragmentHead">
+    <link rel="stylesheet" href="/styles/board/item.css" />
+</head>
+
+<div th:fragment="editFragment" class="item-container container">
+    <form action="/board/edit" method="post" class="me-3" id="form-edit">
+        <div class="item-top-box">
+            <div class="item-title-box">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">제목</span>
+                    <input type="text" class="form-control" placeholder="Username" aria-label="Username"
+                        aria-describedby="basic-addon1" th:value="${board.title}" name="title">
+                </div>
+            </div>
+            <div class="d-flex justify-content-between">
+                <div class="item-name-box">
+                    <div class="item-username">[[${board.userStrId}]]</div>
+                    <div class="item-created">[[${board.createdAt}]] <span>조회수 [[${board.views}]]</span></div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="item-content-box">
+            <div class="input-group">
+                <span class="input-group-text">내용</span>
+                <textarea class="form-control edit-content" aria-label="With textarea" name="content">[[${board.content}]]</textarea>
+            </div>
+        </div>
+        <hr>
+
+        <div class="item-button-box">
+
+            <input id="edit-id" type="hidden" name="edit-id">
+            <button class="btn btn-warning btn-sm" id="editButton">적용</button>
+
+        </div>
+    </form>
+    <script>
+        console.log("[[${board.id}]]");
+        const editButton = document.getElementById("form-edit");
+
+        editButton.onsubmit = (e) => {
+            document.getElementById("edit-id").value = "[[${board.id}]]"
+        }
+
+    </script>
+</div>
+
+
+</html>

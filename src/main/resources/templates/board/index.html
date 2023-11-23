@@ -6,6 +6,9 @@
 
 <body>
     <div th:fragment="boardFragment" class="board container">
+        <!-- <th:block th:if="${session.userId != null}">
+            <div th:replace="~{/board/addBoard :: addBoardFragment}"></div>
+        </th:block> -->
         <form action="/add" method="POST" id="writeForm">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="floatingInput" placeholder="title" name="title">
@@ -33,14 +36,43 @@
                 <tbody>
                     <tr th:each="item, itemStat:${list}" th:object="${item}">
                         <th scope="row" th:text="*{id}"></th>
-                        <td th:text="*{title}"></td>
-                        <td th:text="${boardUserList.get(itemStat.index)}"></td>
+                        <td><a class="index-title" th:href="@{/board/item?num=}+*{id}">[[*{title}]]</a></td>
+                        <td><a class="index-userId"  href="#" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                th:data-bs-title="'<a href='+${item.userGit}+'>'+${item.userGit}+'</a>'"
+                                data-bs-html="true">[[*{userStrId}]]</a></td>
                         <td th:text="*{createdAt}"></td>
                     </tr>
                 </tbody>
             </table>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination" id="page-nav">
+                    <!-- <li class="page-item"><a class="page-link" href="#">이전</a></li>
+                    <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                    <li class="page-item"><a class="page-link" href="?page=2">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">다음</a></li> -->
+                </ul>
+            </nav>
         </div>
         <script>
+            let allList = "[[${list}]]";
+
+            let allSize = +"[[${listSize}]]";
+            let page = +"[[${pageSize}]]";
+            let pageSize=allSize/page;
+
+            const pageNav = document.getElementById('page-nav');
+            for (let index = 1; index < pageSize+1; index++) {
+                let pageItem = document.createElement("li");
+                pageItem.className = "page-item";
+                let pageAnchor = document.createElement("a");
+                pageAnchor.className = "page-link";
+                pageAnchor.href = "?page=" + index;
+                pageAnchor.innerText = index;
+                pageItem.appendChild(pageAnchor);
+                pageNav.appendChild(pageItem);
+            }
+            
             function writeFromDisplay() {
                 if ("[[${session.userId}]]" != "") {
                     document.getElementById("writeForm").style = "display:block;"
@@ -62,6 +94,9 @@
                     e.preventDefault();
                 }
             }
+
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
         </script>
     </div>
 </body>

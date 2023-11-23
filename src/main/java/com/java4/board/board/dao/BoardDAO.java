@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -27,21 +28,35 @@ public class BoardDAO {
 					0,
 					rs.getTimestamp("created_at"),
 					rs.getInt("is_withdrew")==1,
-					rs.getInt("user_id"));
+					rs.getInt("user_id"),
+					rs.getString("userStrId"),
+					rs.getString("git_address"));
 		}
 	};
-
+	
 	public void add(Board board) {
 		jdbcTemplate.update("insert into boards (\"title\", \"content\", \"is_withdrew\", \"user_id\") values (?, ?, ?, ?)", board.getTitle(),
-				board.getContent(), 0, board.getUserId());
+				board.getContent(), board.isWithdrew() ? 1:0, board.getUserId());
 	}
 
-//	public Board get(int id) {
-//		return jdbcTemplate.queryForObject("select * from boards where \"id\"=?", mapper, id);
-//	}
+	public Board get(int id) {
+		return jdbcTemplate.queryForObject("select a.*, b.\"user_id\" as \"userStrId\", b.\"git_address\" from boards a join users b on a.\"user_id\" = b.\"id\" where a.\"id\"=?", mapper, id);
+	}
+	
+	public void del(int withdrew, int id) {
+		jdbcTemplate.update("update boards set \"is_withdrew\"=? where \"id\"=?", withdrew, id);
+	}
+	
+	public void edit(String title, String content, int id) {
+		jdbcTemplate.update("update boards set \"title\"=?, \"content\"=? where \"id\"=?", title, content, id);
+	}
+	
+	public List<Board> getPage(int page, int itemNum) {
+		return jdbcTemplate.query("select a.*, b.\"user_id\" as \"userStrId\", b.\"git_address\" from boards a join users b on a.\"user_id\" = b.\"id\" order by a.\"id\" offset ? rows fetch first ? rows only", mapper,page,itemNum);
+	}
 
 	public List<Board> getAll() {
-		return jdbcTemplate.query("select * from boards order by \"id\"", mapper);
+		return jdbcTemplate.query("select a.*, b.\"user_id\" as \"userStrId\", b.\"git_address\" from boards a join users b on a.\"user_id\" = b.\"id\" order by a.\"id\"", mapper);
 	}
 
 }

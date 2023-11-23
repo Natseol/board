@@ -1,0 +1,22 @@
+.item-container {
+    margin-top: 2rem;
+}
+
+.item-created {
+    font-size: small;
+    color: gray;
+}
+
+.item-content-box {
+    margin: 3rem 0px;
+}
+
+.item-button-box {
+    display: flex;
+    margin: 2rem 0;
+}
+
+/* edit */
+.edit-content {
+    height : 500px
+}

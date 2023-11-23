@@ -1,0 +1,17 @@
+<html mxlns:th="http://www.thymeleaaf.org">
+
+<div th:fragment="addBoardFragment">
+    <form action="/add" method="POST">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="floatingInput" placeholder="title" name="title">
+            <label for="floatingInput">title</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <textarea class="form-control" placeholder="content" id="floatingTextarea" name="content"></textarea>
+            <label for="floatingTextarea">content</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="writeButton">글 작성</button>
+    </form>
+</div>
