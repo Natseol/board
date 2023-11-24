@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -38,6 +39,8 @@ public class BoardController {
 		List<Board> pagelist = boardService.getPage(index, ITEMNUM);
 		model.addAttribute("list",pagelist);
 		
+		model.addAttribute("pageCount",4);		
+		
 		return "/basic/layout";
 	}
 	
@@ -67,12 +70,23 @@ public class BoardController {
 	
 	@GetMapping("/board/item")
 	public String itemPage(@RequestParam("num") int number, Model model) {
-		model.addAttribute("title", "내용");
+		model.addAttribute("title", "게시글");
 		model.addAttribute("path", "/board/item"); 
 		model.addAttribute("content", "itemFragment"); 
 		model.addAttribute("contentHead", "itemFragmentHead");
 		
 		model.addAttribute("board", boardService.get(number));
+		return "/basic/layout";
+	}
+	
+	@GetMapping("/board/{boardId}")
+	public String boardPage(@PathVariable("boardId") int boardId, Model model) {
+		model.addAttribute("title", "게시글");
+		model.addAttribute("path", "/board/item"); 
+		model.addAttribute("content", "itemFragment"); 
+		model.addAttribute("contentHead", "itemFragmentHead");
+		
+		model.addAttribute("board", boardService.get(boardId));
 		return "/basic/layout";
 	}
 	
@@ -86,7 +100,7 @@ public class BoardController {
 	
 	@GetMapping("/board/edit")
 	public String itemEditPage(@RequestParam("num") int number, Model model, HttpSession session) {
-		model.addAttribute("title", "내용");
+		model.addAttribute("title", "수정하기");
 		model.addAttribute("path", "/board/edit"); 
 		model.addAttribute("content", "editFragment"); 
 		model.addAttribute("contentHead", "editFragmentHead");

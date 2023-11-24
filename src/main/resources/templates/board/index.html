@@ -37,32 +37,56 @@
                     <tr th:each="item, itemStat:${list}" th:object="${item}">
                         <th scope="row" th:text="*{id}"></th>
                         <td><a class="index-title" th:href="@{/board/item?num=}+*{id}">[[*{title}]]</a></td>
-                        <td><a class="index-userId"  href="#" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                        <td class="user-id"><a class="index-userId" href="#" data-bs-toggle="tooltip" data-bs-placement="top"
                                 th:data-bs-title="'<a href='+${item.userGit}+'>'+${item.userGit}+'</a>'"
-                                data-bs-html="true">[[*{userStrId}]]</a></td>
+                                data-bs-html="true">[[*{userStrId}]]</a>
+                            <a th:if="*{userGit}!=null" class="user-git-address" th:href="*{userGit}" target="_blank">[[*{userGit}]]</a>
+                        </td>
                         <td th:text="*{createdAt}"></td>
                     </tr>
                 </tbody>
             </table>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination" id="page-nav">
-                    <!-- <li class="page-item"><a class="page-link" href="#">이전</a></li>
-                    <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
-                    <li class="page-item"><a class="page-link" href="?page=2">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">다음</a></li> -->
-                </ul>
-            </nav>
+            <!-- <div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination" id="page-nav">
+
+                    </ul>
+                </nav>
+            </div> -->
+            <div class="d-flex justify-content-center">
+                <nav aria-label="Page navigation" th:with="nowPage=${#numbers.formatInteger(param.page != null ? param.page : 1, 1)}">
+                    <ul class="pagination">
+                      <li class="page-item" th:if="${nowPage} > 1">
+                        <a class="page-link" th:href="@{/(page=${nowPage-1})}" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+                      <li
+                        th:each="page : ${#numbers.sequence(1, pageCount)}"
+                        class="page-item"
+                      >
+                        <a class="page-link" th:href="@{/(page=${page})}">
+                          [[${page}]]
+                        </a>
+                      </li>
+                      <li class="page-item" th:if="${nowPage} != ${pageCount}">
+                        <a class="page-link" th:href="@{/(page=${nowPage}+1)}" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+            </div>
         </div>
         <script>
             let allList = "[[${list}]]";
 
             let allSize = +"[[${listSize}]]";
             let page = +"[[${pageSize}]]";
-            let pageSize=allSize/page;
+            let pageSize = allSize / page;
 
             const pageNav = document.getElementById('page-nav');
-            for (let index = 1; index < pageSize+1; index++) {
+            for (let index = 1; index < pageSize + 1; index++) {
                 let pageItem = document.createElement("li");
                 pageItem.className = "page-item";
                 let pageAnchor = document.createElement("a");
@@ -72,7 +96,7 @@
                 pageItem.appendChild(pageAnchor);
                 pageNav.appendChild(pageItem);
             }
-            
+
             function writeFromDisplay() {
                 if ("[[${session.userId}]]" != "") {
                     document.getElementById("writeForm").style = "display:block;"

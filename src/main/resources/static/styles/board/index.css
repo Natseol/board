@@ -18,7 +18,30 @@
     color: black;
 }
 
+.index-title:hover {
+    text-decoration: underline; 
+}
+
 .index-userId {
     text-decoration: none;
     color: black;
+}
+
+.user-git-address {
+    display: none;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    position : absolute;
+    background-color: white;
+    z-index: 100;
+    transform: translate() - 10rem;
+}
+
+.user-id:hover{
+    text-decoration: underline;
+}
+
+.user-id:hover .user-git-address{
+    display: block;
 }

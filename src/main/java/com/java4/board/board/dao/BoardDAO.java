@@ -52,11 +52,14 @@ public class BoardDAO {
 	}
 	
 	public List<Board> getPage(int page, int itemNum) {
-		return jdbcTemplate.query("select a.*, b.\"user_id\" as \"userStrId\", b.\"git_address\" from boards a join users b on a.\"user_id\" = b.\"id\" order by a.\"id\" offset ? rows fetch first ? rows only", mapper,page,itemNum);
+		return jdbcTemplate.query("select a.*, b.\"user_id\" as \"userStrId\", b.\"git_address\" from boards a join users b on a.\"user_id\" = b.\"id\" order by a.\"id\" desc offset ? rows fetch first ? rows only", mapper,page,itemNum);
 	}
 
 	public List<Board> getAll() {
-		return jdbcTemplate.query("select a.*, b.\"user_id\" as \"userStrId\", b.\"git_address\" from boards a join users b on a.\"user_id\" = b.\"id\" order by a.\"id\"", mapper);
+		return jdbcTemplate.query("select a.*, b.\"user_id\" as \"userStrId\", b.\"git_address\" from boards a join users b on a.\"user_id\" = b.\"id\" order by a.\"id\" desc ", mapper);
 	}
-
+	
+	public int getCount() {
+		return jdbcTemplate.queryForObject("select count(*) from boards", Integer.class);
+	}
 }

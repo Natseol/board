@@ -59,4 +59,9 @@ public class BoardService {
 				.collect(Collectors.toList());
 		return list;
 	}
+	
+	public int getPageCount(int count) {
+		int num = (boardDAO.getCount()-1)/count +1;
+		return num;
+	}
 }
