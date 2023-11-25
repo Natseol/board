@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.java4.board.board.domain.Board;
 import com.java4.board.board.service.BoardService;
+import com.java4.board.comment.service.CommentService;
 import com.java4.board.user.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
@@ -23,6 +24,8 @@ public class BoardController {
 	BoardService boardService;
 	@Autowired
 	UserService userService;
+	@Autowired
+	CommentService commentService;
 	
 	@GetMapping("/")
 	public String boardMainPage(@RequestParam(defaultValue = "1") int page, Model model) {
@@ -68,16 +71,17 @@ public class BoardController {
 		return "/basic/layout";
 	}
 	
-	@GetMapping("/board/item")
-	public String itemPage(@RequestParam("num") int number, Model model) {
-		model.addAttribute("title", "게시글");
-		model.addAttribute("path", "/board/item"); 
-		model.addAttribute("content", "itemFragment"); 
-		model.addAttribute("contentHead", "itemFragmentHead");
-		
-		model.addAttribute("board", boardService.get(number));
-		return "/basic/layout";
-	}
+//	@GetMapping("/board/item")
+//	public String itemPage(@RequestParam("num") int number, Model model) {
+//		model.addAttribute("title", "게시글");
+//		model.addAttribute("path", "/board/item"); 
+//		model.addAttribute("content", "itemFragment"); 
+//		model.addAttribute("contentHead", "itemFragmentHead");	
+//		
+//		model.addAttribute("board", boardService.get(number));
+//		model.addAttribute("boardContent", boardService.get(number).getContent().replace("\n","<br>"));
+//		return "/basic/layout";
+//	}
 	
 	@GetMapping("/board/{boardId}")
 	public String boardPage(@PathVariable("boardId") int boardId, Model model) {
@@ -87,6 +91,9 @@ public class BoardController {
 		model.addAttribute("contentHead", "itemFragmentHead");
 		
 		model.addAttribute("board", boardService.get(boardId));
+		model.addAttribute("boardContent", boardService.get(boardId).getContent().replace("\n","<br>"));
+		
+		model.addAttribute("comments", commentService.getComments(boardId));
 		return "/basic/layout";
 	}
 	

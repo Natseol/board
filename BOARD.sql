@@ -37,3 +37,15 @@ CREATE TABLE likes_and_hates
     constraint fk_user_lah foreign key ("user_id") references users ("id"),
     constraint fk_board_lah foreign key ("board_id") references boards ("id")
     );
+    
+CREATE TABLE comments (
+    "comment_id" NUMBER GENERATED AS IDENTITY PRIMARY KEY,
+    "board_id" NUMBER,
+    "parent_comment_id" NUMBER,
+    "user_id" varchar2(50),
+    "content" VARCHAR2(1000),    
+    "created_at" TIMESTAMP default current_timestamp,
+    constraint fk_board_cmt FOREIGN KEY ("board_id") REFERENCES boards ("id"),
+--    constraint fk_id_cmt FOREIGN KEY ("parent_comment_id") REFERENCES comments ("comment_id"),
+    constraint fk_user_cmt FOREIGN KEY ("user_id") REFERENCES users ("user_id")
+);

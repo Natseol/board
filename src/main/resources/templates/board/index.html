@@ -36,7 +36,7 @@
                 <tbody>
                     <tr th:each="item, itemStat:${list}" th:object="${item}">
                         <th scope="row" th:text="*{id}"></th>
-                        <td><a class="index-title" th:href="@{/board/item?num=}+*{id}">[[*{title}]]</a></td>
+                        <td><a class="index-title" th:href="@{/board/}+*{id}">[[*{title}]]</a></td>
                         <td class="user-id"><a class="index-userId" href="#" data-bs-toggle="tooltip" data-bs-placement="top"
                                 th:data-bs-title="'<a href='+${item.userGit}+'>'+${item.userGit}+'</a>'"
                                 data-bs-html="true">[[*{userStrId}]]</a>
@@ -79,24 +79,24 @@
             </div>
         </div>
         <script>
-            let allList = "[[${list}]]";
-
+            
             let allSize = +"[[${listSize}]]";
             let page = +"[[${pageSize}]]";
             let pageSize = allSize / page;
 
-            const pageNav = document.getElementById('page-nav');
-            for (let index = 1; index < pageSize + 1; index++) {
-                let pageItem = document.createElement("li");
-                pageItem.className = "page-item";
-                let pageAnchor = document.createElement("a");
-                pageAnchor.className = "page-link";
-                pageAnchor.href = "?page=" + index;
-                pageAnchor.innerText = index;
-                pageItem.appendChild(pageAnchor);
-                pageNav.appendChild(pageItem);
-            }
+            // const pageNav = document.getElementById('page-nav');
+            // for (let index = 1; index < pageSize + 1; index++) {
+            //     let pageItem = document.createElement("li");
+            //     pageItem.className = "page-item";
+            //     let pageAnchor = document.createElement("a");
+            //     pageAnchor.className = "page-link";
+            //     pageAnchor.href = "?page=" + index;
+            //     pageAnchor.innerText = index;
+            //     pageItem.appendChild(pageAnchor);
+            //     pageNav.appendChild(pageItem);
+            // }
 
+            console.log("[[${session.userId}]]");
             function writeFromDisplay() {
                 if ("[[${session.userId}]]" != "") {
                     document.getElementById("writeForm").style = "display:block;"

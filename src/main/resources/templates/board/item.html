@@ -2,6 +2,7 @@
 
 <head th:fragment="itemFragmentHead">
     <link rel="stylesheet" href="/styles/board/item.css" />
+    <link th:replace="~{/board/comment :: commentFragmentHead}"></link>
 </head>
 
 <div th:fragment="itemFragment" class="item-container container">
@@ -19,13 +20,15 @@
     </div>
     <hr>
     <div class="item-content-box">
-        <div class="item-content">
-            [[${board.content}]]
+        <div class="item-content" >
+            [(${boardContent})]
         </div>
     </div>
     <div class="item-likes-box">좋아요 갯수</div>
     <hr>
-    <div>댓글 작성영역</div>
+    <div>
+        <div th:replace="~{/board/comment :: commentFragment}"></div>
+    </div>
     <div class="item-button-box">
         <form action="/board/edit" method="get" class="me-3" id="form-edit">
             <input id="edit-id" type="hidden" name="num">

@@ -1,0 +1,42 @@
+.comment-title {
+    font-size: large;
+    font-weight: bold;
+    padding: 0px 0.5rem 1.5rem
+}
+
+.comment-box {
+    padding : 0 1.5rem;
+}
+
+.comment-userId{
+    font-weight: bold;
+}
+
+.comment-created{
+    font-size: small;
+    color: gray;
+}
+
+.comment-writer {
+    font-weight: bold;
+}
+
+.comment-button-open-write {
+    border: unset;
+    background-color: unset;
+    font-size: small;
+    color: gray;
+}
+.comment-button-box{
+    text-align: right;
+}
+.comment-button-write {
+    border: unset;
+    background-color: unset;
+    font-size: small;
+    color: gray;    
+}
+
+.comment-button-add {
+    display: none;
+}
