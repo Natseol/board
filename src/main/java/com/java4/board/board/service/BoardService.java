@@ -64,4 +64,9 @@ public class BoardService {
 		int num = (boardDAO.getCount()-1)/count +1;
 		return num;
 	}
+	
+	public void views(int id) {
+		int view = boardDAO.get(id).getViews();
+		boardDAO.views(view+1, id);
+	}
 }

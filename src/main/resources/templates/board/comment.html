@@ -1,116 +1,32 @@
 <html mxlns:th="http://www.thymeleaaf.org">
 
-<head>
-    <link th:fragment="commentFragmentHead" rel="stylesheet" href="/styles/board/comment.css" />
+<head th:fragment="commentFragmentHead">
+    <link rel="stylesheet" href="/styles/board/comment.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <div th:fragment="commentFragment">
     <div class="comment-title">댓글</div>
-    <div class="comment-box" th:each="comment, status :${comments}" th:object="${comment}">
-        <th:block th:if="*{parentCommentId == 0}">
-            <div class="comment-userId">[[*{userId}]]</div>
-            <div class="comment-content">[[*{commentContent}]]</div>
-            <div class="comment-created">[[*{commentCreatedAt}]]
-                <button class="comment-button-open-write"
-                    th:onclick="'showCommentForm(\'comment-button-add-' + ${status.index} + '\')'">답글쓰기</button>
-            </div>
-            <form action="/comment/add" method="post" th:id="'comment-button-add-' + ${status.index}"
-                class="comment-button-add">
-                <div class="comment-writer">
-                    [[${session.userId}]]
-                </div>
-                <div class="form-floating mt-1 mb-1">
-                    <textarea class="form-control" placeholder="content" id="comment-intput-content"
-                        name="content"></textarea>
-                    <label for="comment-content" class="comment-label">댓글을 남겨보세요</label>
-                </div>
-                <input type="hidden" name="parent-comment-id" th:value="*{commentId}">
-                <div class="comment-button-box"><button class="comment-button-write me-2">등록</button></div>
-            </form>
-            <hr th:unless="${status.last}" />
-
-            <!-- 대댓글 출력 -->
-            <th:block th:each="reply : ${comments}" th:object="${reply}">
-                <th:block th:if="${reply.parentCommentId == comment.commentId}">
-                    <div class="comment-reply">
-                        <!-- 대댓글 내용 출력 -->
-                        <div class="comment-userId">[[*{userId}]]</div>
-                        <div class="comment-content">[[*{commentContent}]]</div>
-                        <div class="comment-created">[[*{commentCreatedAt}]]
-                            <button class="comment-button-open-write"
-                                th:onclick="'showCommentForm(\'comment-button-add-' + ${status.index} + '\')'">답글쓰기</button>
-                        </div>
-                        <form action="/comment/add" method="post" th:id="'comment-button-add-' + ${status.index}"
-                            class="comment-button-add">
-                            <div class="comment-writer">
-                                [[${session.userId}]]
-                            </div>
-                            <div class="form-floating mt-1 mb-1">
-                                <textarea class="form-control" placeholder="content" id="comment-intput-content"
-                                    name="content"></textarea>
-                                <label for="comment-content" class="comment-label">댓글을 남겨보세요</label>
-                            </div>
-                            <input type="hidden" name="parent-comment-id" th:value="*{commentId}">
-                            <div class="comment-button-box"><button class="comment-button-write me-2">등록</button></div>
-                        </form>
-                    </div>
-                </th:block>
-            </th:block>
-
-        </th:block>
+    <div class="comment-box" id="commentBox" th:data-board-id="${board.id}">
+        <!-- 댓글 자바스크립트 -->
     </div>
     <hr>
-    <form action="/comment/add" method="post" id="comment-button">
+    <form action="/comments/add" method="post" th:if="${session.Id}!=null">
         <div class="commenet-writer">
             [[${session.userId}]]
         </div>
         <div class="form-floating mt-1 mb-1">
             <textarea class="form-control" placeholder="content" id="comment-intput-content" name="content"></textarea>
+            <input type="hidden" name="user_id" th:value="${session.Id}">
+            <input type="hidden" name="board_id" th:value="${board.id}">
             <label for="comment-content" class="comment-label">댓글을 남겨보세요</label>
         </div>
         <div class="comment-button-box"><button class="comment-button-write me-2">등록</button></div>
     </form>
-    <script>
-
-        console.log("[[${comments}]]");
-        function showCommentForm(formId) {
-            let formStyle = document.getElementById(formId).style;
-            formStyle.padding = "0 0 0 1rem";
-            let formDisplay = formStyle.display;
-            document.getElementById(formId).style.display = (formDisplay == "block" ? "none" : "block");
-        }
-
-        let forms = document.querySelectorAll('.comment-button-add');
-        forms.forEach(function (form) {
-            form.onsubmit = function () {
-                addInfo(form);
-            }
-        });
-
-
-        function addInfo(parent) {
-            let boardIdInput = document.createElement("input");
-            boardIdInput.type = "hidden";
-            boardIdInput.name = "board-id";
-            boardIdInput.value = "[[${board.id}]]";
-            parent.appendChild(boardIdInput);
-
-            let userIdInput = document.createElement("input");
-            userIdInput.type = "hidden";
-            userIdInput.name = "user-id";
-            userIdInput.value = "[[${session.userId}]]";
-            parent.appendChild(userIdInput);
-
-            let currentUrlInput = document.createElement("input");
-            currentUrlInput.type = "hidden";
-            currentUrlInput.name = "currentPageUrl";
-            currentUrlInput.value = window.location.href;
-            parent.appendChild(currentUrlInput);
-        }
-
-        document.getElementById("comment-button").onsubmit = function () {
-            addInfo(this);
-        };
-
+    <script>        
+        const sessionId = "[[${session.Id}]]";
+        const sessionUserId = "[[${session.userId}]]";
+        const boardId = "[[${board.id}]]";
     </script>
+    <script src="/scripts/board/comment.js"></script>
 </div>

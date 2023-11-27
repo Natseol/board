@@ -14,14 +14,17 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class Comment {
+	private int id;
+	@NonNull
+	private String content;
+	private Timestamp createdAt;
+	private boolean withdrew = false;
+	@NonNull
+	private int userId;
+	@NonNull
+	private int boardId;	
 	private int commentId;
-	@NonNull
-	private int boardId;
-	@NonNull
-	private int parentCommentId;
-	@NonNull
-	private String userId;
-	@NonNull
-	private String commentContent;
-	private Timestamp commentCreatedAt;	
+	private List<Comment> children;
+	
+	private String userStrId;
 }

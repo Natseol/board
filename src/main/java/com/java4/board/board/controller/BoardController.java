@@ -93,7 +93,9 @@ public class BoardController {
 		model.addAttribute("board", boardService.get(boardId));
 		model.addAttribute("boardContent", boardService.get(boardId).getContent().replace("\n","<br>"));
 		
-		model.addAttribute("comments", commentService.getComments(boardId));
+		boardService.views(boardId);
+		
+//		model.addAttribute("comments", commentService.getComments(boardId));
 		return "/basic/layout";
 	}
 	

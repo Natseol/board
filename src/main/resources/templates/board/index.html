@@ -31,6 +31,7 @@
                         <th scope="col">제목</th>
                         <th scope="col">작성자</th>
                         <th scope="col">작성일</th>
+                        <th scope="col">조회</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,6 +44,7 @@
                             <a th:if="*{userGit}!=null" class="user-git-address" th:href="*{userGit}" target="_blank">[[*{userGit}]]</a>
                         </td>
                         <td th:text="*{createdAt}"></td>
+                        <td th:text="*{views}"></td>
                     </tr>
                 </tbody>
             </table>

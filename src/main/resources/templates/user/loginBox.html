@@ -26,8 +26,7 @@
         <script src="/scripts/user/login.js"></script>
         <script>
             let userId = "[[${session.userId}]]"
-            const loginButton = document.getElementById("loginButton")
-            console.log("userId: " + userId);
+            const loginButton = document.getElementById("loginButton")            
             if (userId != "") {
                 loginButton.innerText = "로그아웃";
                 loginButton.type = "button";

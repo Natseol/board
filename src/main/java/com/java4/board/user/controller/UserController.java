@@ -74,6 +74,7 @@ public class UserController {
 			tempUser.setPassword(data.get("password"));
 			tempUser = userService.login(tempUser);
 			if (tempUser != null) {
+				session.setAttribute("Id", tempUser.getId());
 				session.setAttribute("userId", tempUser.getUserId());
 				session.setAttribute("userName", tempUser.getName());
 			}

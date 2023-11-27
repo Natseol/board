@@ -51,6 +51,10 @@ public class BoardDAO {
 		jdbcTemplate.update("update boards set \"title\"=?, \"content\"=? where \"id\"=?", title, content, id);
 	}
 	
+	public void views(int view, int id) {
+		jdbcTemplate.update("update boards set \"views\"=? where \"id\"=?", view, id);
+	}
+	
 	public List<Board> getPage(int page, int itemNum) {
 		return jdbcTemplate.query("select a.*, b.\"user_id\" as \"userStrId\", b.\"git_address\" from boards a join users b on a.\"user_id\" = b.\"id\" order by a.\"id\" desc offset ? rows fetch first ? rows only", mapper,page,itemNum);
 	}

@@ -17,7 +17,20 @@ public class CommentService {
 		commentDAO.add(comment);
 	}
 	
-	public List<Comment> getComments(int boardId) {
-		return commentDAO.getComments(boardId);
+	public List<Comment> getComments(int boardId, int start) {
+		List<Comment> list = commentDAO.getParent(boardId, start);		
+		list.forEach((item)-> {
+			item.setChildren(getChildren(boardId, item));
+		});
+		return list;
 	}
+	
+	private List<Comment> getChildren(int boardId, Comment comment) {
+		List<Comment> list = commentDAO.getChildren(boardId, comment.getId());
+		list.forEach((item) -> {
+			item.setChildren(getChildren(boardId, item));
+		});
+		return list;
+	}
+	
 }
