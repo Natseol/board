@@ -39,13 +39,15 @@ CREATE TABLE likes_and_hates
     );
     
 CREATE TABLE comments (
-    "comment_id" NUMBER GENERATED AS IDENTITY PRIMARY KEY,
-    "board_id" NUMBER,
-    "parent_comment_id" NUMBER,
-    "user_id" varchar2(50),
+    "id" NUMBER GENERATED AS IDENTITY PRIMARY KEY,
     "content" VARCHAR2(1000),    
     "created_at" TIMESTAMP default current_timestamp,
+    "is_withdrew" number(1) default 0,
+    "user_id" NUMBER not null,
+    "board_id" NUMBER not null,
+    "comment_id" NUMBER,    
+    
+    constraint fk_user_cmt FOREIGN KEY ("user_id") REFERENCES users ("id"),
     constraint fk_board_cmt FOREIGN KEY ("board_id") REFERENCES boards ("id"),
---    constraint fk_id_cmt FOREIGN KEY ("parent_comment_id") REFERENCES comments ("comment_id"),
-    constraint fk_user_cmt FOREIGN KEY ("user_id") REFERENCES users ("user_id")
+    constraint fk_id_cmt FOREIGN KEY ("comment_id") REFERENCES comments ("id")    
 );

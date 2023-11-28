@@ -33,4 +33,8 @@ public class CommentService {
 		return list;
 	}
 	
+	public int getCount(int boardId) {
+		return commentDAO.getCount(boardId);
+	}
+	
 }

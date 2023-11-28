@@ -91,6 +91,7 @@ public class UserController {
 	public String loginOut(Model model, HttpSession session) {
 		session.removeAttribute("userId");
 		session.removeAttribute("userName");
+		session.removeAttribute("Id");
 		return "redirect:/";
 	}
 }

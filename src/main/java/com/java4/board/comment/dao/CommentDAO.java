@@ -58,4 +58,9 @@ public class CommentDAO {
 				+ "from comments a join users b on a.\"user_id\" = b.\"id\" "
 				+ "where a.\"board_id\"=? and a.\"comment_id\" = ? order by a.\"id\"", mapper, boardId, comentId);
 	}
+	
+	public int getCount(int boardId) {
+		return jdbcTemplate.queryForObject("select count(*) from comments "
+				+ "where \"board_id\"=? and \"comment_id\" is null", Integer.class, boardId);
+	}
 }

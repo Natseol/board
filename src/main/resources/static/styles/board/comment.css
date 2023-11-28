@@ -4,6 +4,10 @@
     padding: 0px 0.5rem 1.5rem
 }
 
+.add-comment-btn-box {
+    text-align: center;
+}
+
 .comment-box {
     padding : 0 1.5rem;
 }

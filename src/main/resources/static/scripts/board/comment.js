@@ -1,17 +1,22 @@
 const commentListElem = document.getElementById("commentBox");
-console.log(commentListElem.dataset.boardId);
 
 const getList = async () => {
-    const list = (await axios.get(`/comments?boardId=${commentListElem.dataset.boardId}`)).data;
-    console.log(list);
+    const data = (await axios.get(`/comments?boardId=${commentListElem.dataset.boardId}
+    &start=${commentListElem.children.length}`)).data;
+    console.log(commentListElem);
+    console.log(data);
+
+    if (data.end) {
+        document.getElementById("add-comment-btn").outerHTML = "";
+    }
 
     const commentBox = document.getElementById("commentBox");
-    commentBox.innerHTML = "";
-    if (list.length == 0 ) {
+    // commentBox.innerHTML = "";
+    if (data.list.length == 0) {
         commentBox.innerHTML = "작성된 댓글이 없습니다";
     }
 
-    list.forEach(comment => {
+    data.list.forEach(comment => {
         const commentElement = createCommentElement(comment, 0);
         commentBox.append(commentElement);
     });
@@ -32,12 +37,14 @@ function createCommentElement(comment, depth) {
 
     const commentCreated = document.createElement("div");
     commentCreated.className = "comment-created";
-    commentCreated.innerHTML = `${comment.createdAt}`;
+    commentCreated.innerHTML = `${new Date(comment.createdAt).toDateString()}`;
 
     const commentButtonOpenWrite = document.createElement("button");
     commentButtonOpenWrite.className = "comment-button-open-write";
     commentButtonOpenWrite.innerText = "답글쓰기";
-    commentButtonOpenWrite.addEventListener("click", () => toggleReplyForm(commentItem));
+    if (sessionId != "") {
+        commentButtonOpenWrite.addEventListener("click", () => toggleReplyForm(commentItem));
+    }
 
     commentItem.append(commentUserId);
     commentItem.append(commentContent);
@@ -67,7 +74,7 @@ function createCommentElement(comment, depth) {
 
 function createReplyForm(parentComment) {
     const form = document.createElement("form");
-    form.className="comment-form"
+    form.className = "comment-form"
     form.action = "/comments/add";
     form.method = "post";
 
@@ -98,8 +105,7 @@ function createReplyForm(parentComment) {
     hiddenParentId.type = "hidden";
     hiddenParentId.name = "parent_id";
     hiddenParentId.value = parentComment.id;
-    console.log(sessionId+" "+boardId+" "+parentComment.id);//데이터 확인
-    
+
     const label = document.createElement("label");
     label.htmlFor = `reply-content-${parentComment.id}`;
     label.className = "comment-label";
@@ -124,6 +130,9 @@ function createReplyForm(parentComment) {
     form.append(formFloating);
     form.append(commentButtonBox);
 
+    const commentHr = document.createElement("hr");
+    form.append(commentHr);
+
     form.style.display = "none";
 
     return form;
@@ -131,12 +140,12 @@ function createReplyForm(parentComment) {
 
 function toggleReplyForm(commentItem) {
     const replyForm = commentItem.querySelector("form");
+    // const replyFormsAll = document.querySelectorAll("form");
 
-    const replyFormsAll = document.querySelectorAll("form");
-    replyFormsAll.forEach(form => {
-        form.style.display = "none";
-    });
-    
+    // replyFormsAll.forEach(form => {
+    //     form.style.display = "none";
+    // });
+
     if (replyForm.style.display === "none") {
         replyForm.style.display = "block";
     } else {
@@ -145,3 +154,7 @@ function toggleReplyForm(commentItem) {
 }
 
 getList();
+
+document.getElementById("add-comment-btn").onclick = () => {
+    getList();
+}
