@@ -1,4 +1,5 @@
 const commentListElem = document.getElementById("commentBox");
+console.log("테스트"+`${commentListElem.dataset.boardId}`+"테스트");
 
 const getList = async () => {
     const data = (await axios.get(`/comments?boardId=${commentListElem.dataset.boardId}

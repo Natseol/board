@@ -1,15 +1,22 @@
 package com.java4.board.board.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.java4.board.board.domain.Board;
 import com.java4.board.board.service.BoardService;
@@ -51,8 +58,11 @@ public class BoardController {
 	public String addItem(@RequestParam Map<String, String> data, HttpSession session, Model model) {
 		try {
 			if (session.getAttribute("userId")!=null) {
+				String tempContent = data.get("content");
+				tempContent = tempContent.replaceAll("width=\"[0-9]*\"", "width=\"100%\"");
+				tempContent = tempContent.replaceAll("height=\"[0-9]*\"", "height=\"auto\"");
 				int userIntId = userService.get((String) session.getAttribute("userId")).getId();
-				boardService.add(new Board(data.get("title"),data.get("content"),userIntId));
+				boardService.add(new Board(data.get("title"),tempContent,userIntId));
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -128,4 +138,28 @@ public class BoardController {
 		return "redirect:/board/item?num="+id;
 	}
 	
+	@PostMapping("/upload")
+	@ResponseBody
+	public ModelMap uploadImage(MultipartHttpServletRequest req) {
+		ModelMap model = new ModelMap();
+		try {
+			MultipartFile uploadFile = req.getFile("upload");
+			String originName = uploadFile.getOriginalFilename();
+			String[] tempNames = originName.split("[.]");
+			String ext = "."+tempNames[tempNames.length - 1];
+//			String ext = originName.substring(originName.indexOf("."));
+			String randomName = UUID.randomUUID() + ext;
+			String savePath = "C:\\Users\\KGA\\git\\board\\src\\main\\resources\\static\\Imgs\\"+randomName;
+			String uploadUrl = "/imgs/" + randomName;
+			File file = new File(savePath);
+			uploadFile.transferTo(file);
+			
+			model.addAttribute("uploaded",true);
+			model.addAttribute("url",uploadUrl);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return model;
+	}
 }

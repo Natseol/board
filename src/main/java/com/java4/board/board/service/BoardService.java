@@ -8,16 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.java4.board.board.dao.BoardDAO;
+import com.java4.board.board.dao.BoardDAOMysql;
 import com.java4.board.board.domain.Board;
 import com.java4.board.user.dao.UserDAO;
-;
+import com.java4.board.user.dao.UserDAOMysql;
 
 @Service
 public class BoardService {
 	@Autowired
-	BoardDAO boardDAO;
+	BoardDAOMysql boardDAO;
 	@Autowired
-	UserDAO userDAO;
+	UserDAOMysql userDAO;
 	
 	public void add(Board board) {
 		boardDAO.add(board);

@@ -2,6 +2,7 @@
 
 <head th:fragment="boardFragmentHead">
     <link rel="stylesheet" href="/styles/board/index.css" />
+    <link rel="stylesheet" href="/styles/board/add.css" />
 </head>
 
 <body>
@@ -17,11 +18,19 @@
 
             <div class="form-floating mb-3">
                 <textarea class="form-control" placeholder="content" id="floatingTextarea" name="content"></textarea>
-                <label for="floatingTextarea">content</label>
+                <!-- <label for="floatingTextarea">content</label> -->
             </div>
 
             <button type="submit" class="btn btn-primary" id="writeButton">글 작성</button>
         </form>
+        <script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/ckeditor.js"></script>
+        <script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/translations/ko.js"></script>
+        <script>
+            ClassicEditor.create(document.getElementById("floatingTextarea"),{
+                language : "ko",
+                ckfinder:{uploadUrl:"/upload"},
+            });
+        </script>
         <hr>
         <div>
             <table class="table">
@@ -110,20 +119,21 @@
                 const inputTitle = document.getElementById("floatingInput");
                 const inputContent = document.getElementById("floatingTextarea");
                 const writeModal = new bootstrap.Modal(document.getElementById('myModal'))
-                if ("[[${session.userId}]]" == "") {
-                    document.getElementById("modalBody").innerHTML = "로그인 후 글작성이 가능합니다"
-                    writeModal.show();
-                    e.preventDefault();
-                } else if (inputTitle.value == "" || inputContent.value == "") {
-                    document.getElementById("modalBody").innerHTML = "제목과 내용을 모두 작성해야 합니다"
-                    writeModal.show();
-                    e.preventDefault();
-                }
+                // if ("[[${session.userId}]]" == "") {
+                //     document.getElementById("modalBody").innerHTML = "로그인 후 글작성이 가능합니다"
+                //     writeModal.show();
+                //     e.preventDefault();
+                // } else if (inputTitle.value == "" || inputContent.value == "") {
+                //     document.getElementById("modalBody").innerHTML = "제목과 내용을 모두 작성해야 합니다"
+                //     writeModal.show();
+                //     e.preventDefault();
+                // }
             }
 
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
             const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
         </script>
+
     </div>
 </body>
 

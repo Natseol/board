@@ -28,7 +28,7 @@ public class CommentController {
 	@GetMapping
 	@ResponseBody
 	public ResponseComment getComments(@RequestParam Map<String, String> data) {
-		int boardId = Integer.parseInt(data.get("boardId"));
+		int boardId = Integer.parseInt(data.get("boardId").trim());
 		ResponseComment res = new ResponseComment(
 				commentService.getComments(boardId,
 						Integer.parseInt(data.get("start"))),
